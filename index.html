@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Barber Rooms — Adare</title>
+<meta name="description" content="The Barber Rooms — traditional barbering on Blackabbey Road, Adare. Haircuts, beard trims, hot lather and straight razor shaves.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Work+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1A1817;
+    --stone:#EDE7D8;
+    --stone-2:#E3DBC7;
+    --card:#F8F4E9;
+    --forest:#1F3A2E;
+    --forest-2:#16291F;
+    --oxblood:#7A2E2E;
+    --brass:#B4894F;
+    --line: rgba(26,24,23,0.14);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--stone);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    font-weight:400;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  .mono{
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 28px;}
+  ::selection{background:var(--oxblood); color:var(--stone);}
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--oxblood);
+    outline-offset:3px;
+  }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:rgba(237,231,216,0.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    transition:transform .4s ease;
+  }
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px;
+    max-width:1180px; margin:0 auto;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces', serif; font-weight:700; font-size:1.05rem;
+  }
+  .brand-mark{
+    width:30px; height:30px;
+    border-radius:50%;
+    background:conic-gradient(from 45deg, var(--oxblood) 0 25%, var(--stone) 0 50%, var(--forest) 0 75%, var(--stone) 0 100%);
+    flex-shrink:0;
+    border:1px solid var(--ink);
+  }
+  .nav-links{display:flex; gap:32px; font-size:0.82rem;}
+  .nav-links a{
+    position:relative; padding-bottom:4px;
+  }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:0; width:0; height:1px;
+    background:var(--oxblood); transition:width .25s ease;
+  }
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{
+    font-size:0.78rem; padding:9px 18px;
+    border:1px solid var(--ink); border-radius:2px;
+    transition:background .2s ease, color .2s ease;
+  }
+  .nav-cta:hover{background:var(--ink); color:var(--stone);}
+  .nav-toggle{display:none; background:none; border:0; cursor:pointer;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:170px 0 100px;
+    overflow:hidden;
+    background:
+      radial-gradient(ellipse 90% 70% at 50% -10%, rgba(122,46,46,0.10), transparent 60%),
+      var(--stone);
+  }
+  .hero-inner{
+    max-width:1180px; margin:0 auto; padding:0 28px;
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:60px; align-items:center;
+  }
+  .eyebrow{
+    font-size:0.72rem; color:var(--oxblood); margin-bottom:22px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:''; width:26px; height:1px; background:var(--oxblood);}
+  .hero h1{
+    font-size:clamp(2.6rem, 5.6vw, 4.6rem);
+    line-height:0.98;
+    color:var(--ink);
+  }
+  .hero h1 em{
+    font-style:italic; color:var(--oxblood); font-weight:500;
+  }
+  .hero p.lede{
+    margin-top:24px; max-width:44ch;
+    font-size:1.08rem; color:#3a3733;
+  }
+  .hero-ctas{display:flex; gap:16px; margin-top:36px; flex-wrap:wrap;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:14px 24px; font-size:0.85rem; font-weight:500;
+    border-radius:2px; transition:transform .2s ease, background .2s ease, color .2s ease;
+  }
+  .btn-primary{background:var(--forest); color:var(--stone);}
+  .btn-primary:hover{background:var(--forest-2); transform:translateY(-2px);}
+  .btn-ghost{border:1px solid var(--ink);}
+  .btn-ghost:hover{background:var(--ink); color:var(--stone); transform:translateY(-2px);}
+
+  /* signature: hanging shop sign */
+  .sign-wrap{
+    position:relative; display:flex; justify-content:center;
+    animation:settle 1.1s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes settle{
+    0%{transform:rotate(-6deg) translateY(-14px); opacity:0;}
+    100%{transform:rotate(0deg) translateY(0); opacity:1;}
+  }
+  .sign-post{
+    position:absolute; top:-46px; left:50%; transform:translateX(-50%);
+    width:2px; height:46px; background:var(--ink);
+  }
+  .sign-post::before{
+    content:''; position:absolute; top:0; left:-38px; width:76px; height:2px; background:var(--ink);
+  }
+  .sign-board{
+    transform-origin:top center;
+    width:min(340px, 82vw); aspect-ratio:4/5;
+    background:var(--forest);
+    border:1px solid rgba(237,231,216,0.25);
+    border-radius:3px;
+    box-shadow:0 30px 60px -20px rgba(26,24,23,0.45);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:30px; text-align:center; position:relative;
+    color:var(--stone);
+    animation:sway 7s ease-in-out infinite;
+  }
+  @keyframes sway{
+    0%,100%{transform:rotate(-0.6deg);}
+    50%{transform:rotate(0.6deg);}
+  }
+  .sign-board::before, .sign-board::after{
+    content:''; position:absolute; top:0; bottom:0; width:6px;
+    background:repeating-linear-gradient(45deg, var(--oxblood) 0 8px, var(--stone) 8px 16px, var(--forest) 16px 24px);
+  }
+  .sign-board::before{left:0;}
+  .sign-board::after{right:0;}
+  .sign-board .sb-label{font-size:0.66rem; margin-bottom:10px; opacity:0.75;}
+  .sign-board .sb-name{
+    font-family:'Fraunces', serif; font-size:1.5rem; font-weight:700; line-height:1.15;
+  }
+  .sign-board .sb-rule{width:44px; height:1px; background:var(--brass); margin:16px auto;}
+  .sign-board .sb-town{font-size:0.68rem; opacity:0.8; letter-spacing:0.18em;}
+  .sign-board .sb-est{
+    margin-top:22px; font-size:0.62rem; color:var(--brass); letter-spacing:0.2em;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .sign-wrap, .sign-board, .reveal{animation:none !important; transition:none !important;}
+  }
+
+  /* ---------- STRIPE DIVIDER (signature motif, used once) ---------- */
+  .stripe{
+    height:14px;
+    background:repeating-linear-gradient(45deg, var(--oxblood) 0 18px, var(--stone) 18px 36px, var(--forest) 36px 54px, var(--stone) 54px 72px);
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about{padding:100px 0; background:var(--card);}
+  .about-grid{
+    display:grid; grid-template-columns:0.85fr 1.15fr; gap:70px; align-items:start;
+  }
+  .section-label{
+    font-size:0.72rem; color:var(--oxblood); margin-bottom:18px;
+  }
+  .about h2{font-size:clamp(2rem, 3.4vw, 2.7rem); margin-bottom:22px;}
+  .about p{color:#4a4640; max-width:56ch; margin-bottom:16px;}
+  .about-stats{
+    margin-top:36px; display:grid; grid-template-columns:1fr 1fr; gap:24px;
+  }
+  .stat{border-top:1px solid var(--line); padding-top:14px;}
+  .stat .num{font-family:'Fraunces', serif; font-size:1.9rem; color:var(--forest);}
+  .stat .lbl{font-size:0.72rem; color:#6b665d; margin-top:4px;}
+  .about-figure{
+    background:var(--forest); border-radius:4px; aspect-ratio:5/4;
+    position:relative; overflow:hidden;
+    display:flex; align-items:flex-end; padding:26px;
+  }
+  .about-figure .chairline{
+    position:absolute; inset:0; opacity:0.5;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(237,231,216,0.06) 0 1px, transparent 1px 34px),
+      repeating-linear-gradient(90deg, rgba(237,231,216,0.06) 0 1px, transparent 1px 34px);
+  }
+  .about-figure .fig-caption{position:relative; color:var(--stone); font-size:0.8rem; max-width:26ch;}
+  .about-figure .fig-caption b{display:block; font-family:'Fraunces', serif; font-size:1.1rem; margin-bottom:6px; color:var(--brass);}
+
+  /* ---------- SERVICES ---------- */
+  .services{padding:100px 0; background:var(--stone);}
+  .services-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    margin-bottom:50px; gap:24px; flex-wrap:wrap;
+  }
+  .services-head h2{font-size:clamp(2rem, 3.4vw, 2.7rem);}
+  .services-note{font-size:0.85rem; color:#6b665d; max-width:32ch;}
+  .service-grid{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line);
+  }
+  .service-card{
+    background:var(--card); padding:32px 28px; min-height:190px;
+    display:flex; flex-direction:column; justify-content:space-between;
+    transition:background .25s ease;
+  }
+  .service-card:hover{background:#fff;}
+  .service-card .sc-index{font-size:0.7rem; color:var(--brass);}
+  .service-card h3{font-size:1.2rem; margin-top:34px; font-weight:600;}
+  .service-card p{font-size:0.82rem; color:#6b665d; margin-top:8px;}
+
+  /* ---------- REVIEWS ---------- */
+  .reviews{padding:100px 0; background:var(--forest); color:var(--stone);}
+  .reviews .section-label{color:var(--brass);}
+  .reviews-head{display:flex; align-items:center; gap:20px; margin-bottom:56px; flex-wrap:wrap;}
+  .reviews h2{color:var(--stone); font-size:clamp(2rem, 3.4vw, 2.7rem);}
+  .stars{color:var(--brass); font-size:1.1rem; letter-spacing:2px;}
+  .review-grid{
+    display:grid; grid-template-columns:repeat(2, 1fr); gap:28px;
+  }
+  .review-card{
+    background:rgba(237,231,216,0.05);
+    border:1px solid rgba(237,231,216,0.16);
+    border-radius:4px; padding:32px;
+  }
+  .review-card .quote-mark{font-family:'Fraunces', serif; font-size:2.4rem; color:var(--brass); line-height:1; margin-bottom:10px;}
+  .review-card p.quote{font-size:1.02rem; color:var(--stone); max-width:48ch;}
+  .review-card .attribution{
+    margin-top:20px; display:flex; justify-content:space-between; align-items:center;
+    font-size:0.72rem; color:rgba(237,231,216,0.6);
+    border-top:1px solid rgba(237,231,216,0.14); padding-top:14px;
+  }
+
+  /* ---------- VISIT ---------- */
+  .visit{padding:100px 0; background:var(--card);}
+  .visit-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:60px;
+  }
+  .visit h2{font-size:clamp(2rem, 3.4vw, 2.7rem); margin-bottom:24px;}
+  .visit-list{margin-top:30px;}
+  .visit-item{
+    display:flex; gap:20px; padding:18px 0; border-top:1px solid var(--line);
+  }
+  .visit-item:last-child{border-bottom:1px solid var(--line);}
+  .visit-item .vi-label{font-size:0.7rem; color:var(--oxblood); min-width:110px; padding-top:2px;}
+  .visit-item .vi-value{font-size:0.98rem;}
+  .visit-item .vi-value a{border-bottom:1px solid var(--brass); transition:opacity .2s;}
+  .visit-item .vi-value a:hover{opacity:0.65;}
+  .visit-note{margin-top:18px; font-size:0.78rem; color:#6b665d;}
+  .map-card{
+    background:var(--forest); border-radius:4px; padding:34px;
+    display:flex; flex-direction:column; justify-content:space-between; color:var(--stone);
+    min-height:340px; position:relative; overflow:hidden;
+  }
+  .map-card .grid-lines{
+    position:absolute; inset:0; opacity:0.4;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(237,231,216,0.08) 0 1px, transparent 1px 40px),
+      repeating-linear-gradient(90deg, rgba(237,231,216,0.08) 0 1px, transparent 1px 40px);
+  }
+  .map-card .pin{
+    position:relative; width:14px; height:14px; border-radius:50% 50% 50% 0;
+    background:var(--oxblood); transform:rotate(-45deg); margin-bottom:18px;
+    box-shadow:0 0 0 6px rgba(122,46,46,0.18);
+  }
+  .map-card .mc-town{position:relative; font-family:'Fraunces', serif; font-size:1.5rem;}
+  .map-card .mc-sub{position:relative; font-size:0.8rem; color:rgba(237,231,216,0.7); margin-top:6px; max-width:28ch;}
+  .map-card .mc-link{
+    position:relative; margin-top:26px; font-size:0.78rem;
+    display:inline-flex; align-items:center; gap:8px; color:var(--brass);
+    border-bottom:1px solid var(--brass); align-self:flex-start;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--ink); color:var(--stone); padding:56px 0 32px;
+  }
+  .footer-top{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    gap:32px; flex-wrap:wrap; padding-bottom:36px; border-bottom:1px solid rgba(237,231,216,0.14);
+  }
+  .footer-brand{font-family:'Fraunces', serif; font-size:1.3rem;}
+  .footer-links{display:flex; gap:28px; font-size:0.82rem;}
+  .footer-links a:hover{color:var(--brass);}
+  .footer-bottom{
+    padding-top:24px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    font-size:0.72rem; color:rgba(237,231,216,0.5);
+  }
+
+  /* reveal on scroll */
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:900px){
+    .hero-inner{grid-template-columns:1fr; gap:70px;}
+    .sign-wrap{order:-1;}
+    .about-grid{grid-template-columns:1fr; gap:40px;}
+    .service-grid{grid-template-columns:repeat(2,1fr);}
+    .review-grid{grid-template-columns:1fr;}
+    .visit-grid{grid-template-columns:1fr;}
+    .nav-links{
+      position:absolute; top:100%; left:0; right:0;
+      background:var(--stone); border-bottom:1px solid var(--line);
+      flex-direction:column; padding:20px 28px; gap:18px;
+      display:none;
+    }
+    .nav-links.open{display:flex;}
+    .nav-toggle{display:block;}
+  }
+  @media (max-width:560px){
+    .service-grid{grid-template-columns:1fr;}
+    .about-stats{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top">
+      <span class="brand-mark" aria-hidden="true"></span>
+      The Barber Rooms
+    </a>
+    <button class="nav-toggle mono" aria-label="Toggle menu" aria-expanded="false" id="navToggle">Menu</button>
+    <div class="nav-links mono" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#visit">Visit</a>
+    </div>
+    <a class="nav-cta mono" href="tel:+353857472660">Call to Book</a>
+  </div>
+</nav>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="eyebrow mono">Blackabbey Road · Adare</div>
+        <h1>Sharp cuts,<br>slow down<br><em>the Adare way.</em></h1>
+        <p class="lede">A modern barbershop on Adare's village streets — traditional craft, straight razor finishes, and a chair that's always warm. Walk-ins welcome, appointments preferred.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="tel:+353857472660">Call +353 85 747 2660</a>
+          <a class="btn btn-ghost" href="#visit">Find the shop</a>
+        </div>
+      </div>
+      <div class="sign-wrap">
+        <div class="sign-post" aria-hidden="true"></div>
+        <div class="sign-board">
+          <span class="sb-label mono">Est. Barbershop</span>
+          <span class="sb-name">The Barber<br>Rooms</span>
+          <span class="sb-rule"></span>
+          <span class="sb-town mono">Adare · Co. Limerick</span>
+          <span class="sb-est mono">Cuts · Shaves · Trims</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="stripe" role="presentation"></div>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="wrap about-grid">
+      <div class="reveal">
+        <div class="about-figure">
+          <div class="chairline" aria-hidden="true"></div>
+          <div class="fig-caption">
+            <b>Vincent O'Carroll</b>
+            Proprietor &amp; barber, running the chair on Blackabbey Road.
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="section-label mono">About the shop</div>
+        <h2>An ultra-modern room on one of Ireland's prettiest streets.</h2>
+        <p>The Barber Rooms sits right in Adare village, a few minutes from the thatched cottages and Adare Manor. Inside it's bright and contemporary — a proper waiting area with TV, papers and magazines, so you're never rushed in or out.</p>
+        <p>Vincent and the team handle everything from a weekly tidy-up to a full traditional shave, with the kind of attention that's turned plenty of one-off visitors — golfers, wedding guests, passers-through — into regulars.</p>
+        <div class="about-stats">
+          <div class="stat"><div class="num">5.0</div><div class="lbl mono">Average rating</div></div>
+          <div class="stat"><div class="num">Mon–Sat</div><div class="lbl mono">Open weekly</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="wrap">
+      <div class="services-head reveal">
+        <div>
+          <div class="section-label mono">On the chair</div>
+          <h2>Cutting, trimming, shaping.</h2>
+        </div>
+        <p class="services-note">Every service finished properly — no clock-watching. Ask in shop for current pricing.</p>
+      </div>
+      <div class="service-grid reveal">
+        <div class="service-card">
+          <span class="sc-index mono">01</span>
+          <div><h3>Classic Haircut</h3><p>Scissor or clipper, tailored to how you actually wear it.</p></div>
+        </div>
+        <div class="service-card">
+          <span class="sc-index mono">02</span>
+          <div><h3>Beard Trim &amp; Shape</h3><p>Line-ups and shaping to keep it sharp between grows.</p></div>
+        </div>
+        <div class="service-card">
+          <span class="sc-index mono">03</span>
+          <div><h3>Hot Lather Shave</h3><p>Steamed towel, hot lather, straight razor. The full ritual.</p></div>
+        </div>
+        <div class="service-card">
+          <span class="sc-index mono">04</span>
+          <div><h3>Traditional Razor Shave</h3><p>Old-school technique for the cleanest possible finish.</p></div>
+        </div>
+        <div class="service-card">
+          <span class="sc-index mono">05</span>
+          <div><h3>Head Shave</h3><p>Fully shaved and finished, no nicks, no rush.</p></div>
+        </div>
+        <div class="service-card">
+          <span class="sc-index mono">06</span>
+          <div><h3>Kids' Cuts</h3><p>Patient, quick, and painless — for the younger regulars.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="reviews" id="reviews">
+    <div class="wrap">
+      <div class="reviews-head reveal">
+        <div>
+          <div class="section-label mono">Word around the village</div>
+          <h2>What people say after the chair.</h2>
+        </div>
+        <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+      </div>
+      <div class="review-grid">
+        <div class="review-card reveal">
+          <div class="quote-mark" aria-hidden="true">“</div>
+          <p class="quote">Called in for a quick trim and beard tidy-up while staying at Adare Manor before an event — sorted in no time and looked sharp for the occasion.</p>
+          <div class="attribution">
+            <span>Visitor, staying near Adare Manor</span>
+            <span class="mono">via Yelp</span>
+          </div>
+        </div>
+        <div class="review-card reveal">
+          <div class="quote-mark" aria-hidden="true">“</div>
+          <p class="quote">Popped in for a haircut while staying overnight in the village and walked out with a brilliant cut and beard trim — honestly one of the best in years, and great value too.</p>
+          <div class="attribution">
+            <span>L.B., overnight guest in Adare</span>
+            <span class="mono">via Yelp</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISIT -->
+  <section class="visit" id="visit">
+    <div class="wrap visit-grid">
+      <div class="reveal">
+        <div class="section-label mono">Find us</div>
+        <h2>Blackabbey Road, right in the village.</h2>
+        <div class="visit-list">
+          <div class="visit-item">
+            <span class="vi-label mono">Address</span>
+            <span class="vi-value">Blackabbey Road, Adare, Co. Limerick, Ireland</span>
+          </div>
+          <div class="visit-item">
+            <span class="vi-label mono">Phone</span>
+            <span class="vi-value"><a href="tel:+353857472660">+353 85 747 2660</a></span>
+          </div>
+          <div class="visit-item">
+            <span class="vi-label mono">Hours</span>
+            <span class="vi-value">Monday – Saturday <span style="opacity:0.6;">(call ahead to confirm times)</span></span>
+          </div>
+          <div class="visit-item">
+            <span class="vi-label mono">Booking</span>
+            <span class="vi-value">Walk-ins welcome, or call to book a slot</span>
+          </div>
+        </div>
+        <p class="visit-note">Two minutes' walk from the village's thatched cottages and shopfronts.</p>
+      </div>
+      <div class="reveal">
+        <div class="map-card">
+          <div class="grid-lines" aria-hidden="true"></div>
+          <div class="pin" aria-hidden="true"></div>
+          <div class="mc-town">Adare, Co. Limerick</div>
+          <div class="mc-sub">Blackabbey Road — near the village centre, close to Adare Manor.</div>
+          <a class="mc-link mono" href="https://www.google.com/maps/search/?api=1&query=The+Barber+Rooms+Blackabbey+Road+Adare+Co+Limerick+Ireland" target="_blank" rel="noopener">Get directions →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">The Barber Rooms</div>
+      <div class="footer-links mono">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#visit">Visit</a>
+        <a href="tel:+353857472660">Call</a>
+      </div>
+    </div>
+    <div class="footer-bottom mono">
+      <span>Blackabbey Road, Adare, Co. Limerick</span>
+      <span>&copy; <span id="year"></span> The Barber Rooms</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open);
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }));
+
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
